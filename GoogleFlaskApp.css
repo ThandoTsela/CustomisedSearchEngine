@@ -24,7 +24,7 @@ body{
     z-index: 9999;
     background-color: #ededed;
     display: flex;
-    /* justify-content: right; */
+    justify-content: right;
     /* align-items: center; */
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
   }
@@ -38,7 +38,7 @@ body{
     border-radius: 5px;
     padding: 3px 18px;
     display: inline-block;
-    justify-self: right;
+    /* justify-self: right; */
     
     /* font-weight: bold; */
   }
@@ -53,6 +53,7 @@ body{
 
   .nav p{
     padding-top: 3px;
-    right: 80%;
-    border: solid;
+    left: 3%;
+    /* border: solid; */
+    position: fixed;
   }
