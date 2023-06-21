@@ -1,22 +1,45 @@
 <!DOCTYPE html>
 <html lang="en">
     <head>
-        <meta charsets="UTF-8">
+        <!-- <meta charsets="UTF-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0"> -->
         <title>Google Flask WebApp</title>
         <link rel="stylesheet" href="GoogleFlaskApp.css">
-        <script type="text/javascript" src=""></script>
+        <!-- <script type="text/javascript" src=""></script> -->
     </head>
     <body>
-        <div class="main">
-            <nav class="nav">
-                <p>Welcome to ...</p>
-                <input placeholder="Search">
-                <a href="#">Search</a>
-            </nav>
+        <!-- <script async src="https://cse.google.com/cse?cx=d0f9c2380140742ee">
+        </script> -->
+        
+        <nav class="nav">
+            <!-- <p>Welcome to ...</p> -->
+            <!-- <form> -->
+            <input type="text" placeholder="Search" id="searchInp">
+            <button type="submit" id="searchBtn" onclick="searchInput()">Search</button> 
+               
+         
+            
+        </nav>
 
-            <div class=""></div>
-        </div>
-    </body>
-</html>
+        <div id="content"></div>
+
+         <script type="text/javascript">
+            var qp = "trees";
+            async function searchInput() {//async so we can use 'await' instead of promise chains.
+                qp = document.getElementById("searchInp").value;
+
+            var apiUrl = 'https://www.googleapis.com/customsearch/v1?key=AIzaSyA7h7bFdIN9u5up5P32MHIdB7wacieRwC8&cx=017576662512468239146:omuauf_lfve&q='+qp;
+
+            const response = await fetch(apiUrl);
+            const jsonData = await response.json();
+            console.log(jsonData['items'][0]['snippet']);
+
+            document.getElementById("content").append(jsonData['items'][0]['snippet']);
+        }; 
+        
+        
+        </script>
+                
+            </body>
+        </html>
