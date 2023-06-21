@@ -43,11 +43,32 @@
 
             //for (var i = 0; i < jsonData['items'].length; i++) {
             for (var i = 0; i < 5; i++) {
-                document.getElementById("title").append(jsonData['items'][i]['title']);
+                var divElement = document.createElement('div');
+                var headingElement = document.createElement('h1');
+                var headingText = document.createTextNode(jsonData['items'][i]['title']);
+                //document.getElementById("title").append(jsonData['items'][i]['title']);
                 document.createElement("br");
-                document.getElementById("snippet").append(jsonData['items'][i]['snippet']);
+                var paragraphElement = document.createElement('p');
+                var paragraphText = document.createTextNode(jsonData['items'][i]['snippet']);
+                //document.getElementById("snippet").append(jsonData['items'][i]['snippet']);
                 document.createElement("br");
-                document.getElementById("link").append(jsonData['items'][i]['link']);
+                var anchorElement = document.createElement('a');
+                anchorElement.href = jsonData['items'][i]['link'];
+                var anchorText = document.createTextNode('Link');
+                //document.getElementById("link").append(jsonData['items'][i]['link']);
+
+                // Append the text nodes to the respective elements
+                headingElement.appendChild(headingText);
+                paragraphElement.appendChild(paragraphText);
+                anchorElement.appendChild(anchorText);
+
+                // Append the heading, paragraph, and anchor elements to the div
+                divElement.appendChild(headingElement);
+                divElement.appendChild(paragraphElement);
+                divElement.appendChild(anchorElement);
+
+                // Append the div to the document body or any other desired parent element
+                document.body.appendChild(divElement);
             };
         }; 
         
