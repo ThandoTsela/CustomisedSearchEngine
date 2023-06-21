@@ -29,7 +29,7 @@ body{
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
   }
 
-  .nav a{
+  .nav button{
     color: #7ee27e;
     text-decoration: none;
     margin: 0 1em;
@@ -56,4 +56,34 @@ body{
     left: 3%;
     /* border: solid; */
     position: fixed;
+  }
+
+  #content{
+    padding-top: 20%;
+    padding-left: 10%;
+    padding-right: 10%;
+    padding-bottom: 20%;
+  }
+
+  #myDiv{
+    padding-top: 2%;
+    padding-left: 5%;
+    padding-right: 5%;
+    padding-bottom: 2%;
+    border: solid;
+    border-color: #9b9a9ab7;
+  }
+
+  #myDiv h1{
+    color: #0f0f0f;
+    font-size: medium;
+  }
+
+  #myDiv p{
+    color: #0f0f0f;
+    font-size: small;
+  }
+
+  #myDiv a{
+    font-size: small;
   }
