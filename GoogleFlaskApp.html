@@ -22,13 +22,7 @@
             
         </nav>
 
-        <div id="content">
-            <div id="result">
-                <h1 id="title"></h1>
-                <p id="snippet"></p>
-                <a href="#" id="link"></a>
-            </div>
-        </div>
+        <div id="content"></div>
 
          <script type="text/javascript">
             var qp = "trees";
@@ -43,7 +37,10 @@
 
             //for (var i = 0; i < jsonData['items'].length; i++) {
             for (var i = 0; i < 5; i++) {
+                var preexistingDiv = document.getElementById('content');
+                var parentDiv = preexistingDiv.parentElement;
                 var divElement = document.createElement('div');
+                divElement.id = 'myDiv';
                 var headingElement = document.createElement('h1');
                 var headingText = document.createTextNode(jsonData['items'][i]['title']);
                 //document.getElementById("title").append(jsonData['items'][i]['title']);
@@ -67,8 +64,8 @@
                 divElement.appendChild(paragraphElement);
                 divElement.appendChild(anchorElement);
 
-                // Append the div to the document body or any other desired parent element
-                document.body.appendChild(divElement);
+                // Append the div to the document preexisting div or any other desired parent element
+                preexistingDiv.appendChild(divElement);
             };
         }; 
         
