@@ -17,23 +17,69 @@
             <!-- <form> -->
             <input type="text" placeholder="Search" id="searchInp">
             <button type="submit" id="searchBtn" onclick="searchInput()">Search</button> 
+            <!-- <button id="saveBtn" onclick="saveData()">Save</button>  -->
                
-         
-            
         </nav>
 
         <div id="content"></div>
 
-         <script type="text/javascript">
+    
+        <!-- <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app.js"></script> -->
+        <!-- <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database.js"></script> -->
+        <script type="module">
+            import { initializeApp } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-app.js";
+            import { getAnalytics } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-analytics.js";
+
+            const firebaseConfig = {
+                apiKey: "AIzaSyATKswTDdUM3O32dHrn5TaluSM0d4Vc7uU",
+                authDomain: "searchapi-4e5ed.firebaseapp.com",
+                databaseURL: "https://searchapi-4e5ed-default-rtdb.firebaseio.com",
+                projectId: "searchapi-4e5ed",
+                storageBucket: "searchapi-4e5ed.appspot.com",
+                messagingSenderId: "282183195106",
+                appId: "1:282183195106:web:e0eb0f103fccfbd493c1bb",
+                measurementId: "G-MDK7H2K8E1"
+                };
+
+            // Initialize Firebase
+            const app = initializeApp(firebaseConfig);
+            const analytics = getAnalytics(app);
+
+            import {getDatabase, ref, set, child, update, remove}
+            from "https://www.gstatic.com/firebasejs/9.23.0/firebase-database.js"
+
+            //set database constant
+            const db = getDatabase();
+
+            function saveData(num1, title1, snippet1, link1) {
+                set(ref(db, "result/"+num1),{
+                    title : title1,
+                    snippet : snippet1,
+                    link : link1
+                })
+                .then(()=>{
+                    alert("data stored successfully");
+                })
+                .catch((error)=>{
+                    alert("unsusccessful, error"+error);
+                });
+
+                //assign event to button
+                // saveBtn.addEventListener('click', SaveData);
+            }
+            window.saveData = saveData; // set saveData to be a global variable
+
+          </script>
+
+         <script>
             var qp = "trees";
             async function searchInput() {//async so we can use 'await' instead of promise chains.
-                qp = document.getElementById("searchInp").value;
-
+                qp = document.getElementById("searchInp").value; 
             var apiUrl = 'https://www.googleapis.com/customsearch/v1?key=AIzaSyA7h7bFdIN9u5up5P32MHIdB7wacieRwC8&cx=017576662512468239146:omuauf_lfve&q='+qp;
 
             const response = await fetch(apiUrl);
             const jsonData = await response.json();
-            console.log(jsonData['items'][0]['snippet']);
+            // console.log(jsonData['items'][0]['snippet']);
 
             //for (var i = 0; i < jsonData['items'].length; i++) {
             for (var i = 0; i < 5; i++) {
@@ -65,12 +111,23 @@
                 divElement.appendChild(anchorElement);
 
                 // Append the div to the document preexisting div or any other desired parent element
+
                 preexistingDiv.appendChild(divElement);
-            };
-        }; 
-        
-        
-        </script>
+                console.log(headingText);
+
+                //get variables from google api to save to the firebase
+                var title = jsonData['items'][i]['title'];
+                var snippet= jsonData['items'][i]['snippet'];
+                var link = jsonData['items'][i]['link'];
+
+
+                // store the data in the database
+                saveData(i.toString(),title, snippet,link);
                 
-            </body>
+            };
+            
+        }; 
+       </script>
+    </body>
+                
         </html>
