@@ -63,6 +63,7 @@ body{
     padding-left: 10%;
     padding-right: 10%;
     padding-bottom: 20%;
+    
   }
 
   #myDiv{
@@ -70,13 +71,15 @@ body{
     padding-left: 5%;
     padding-right: 5%;
     padding-bottom: 2%;
+    border-radius: 10px;
     border: solid;
     border-color: #9b9a9ab7;
+    margin-bottom: 30px;
   }
 
   #myDiv h1{
     color: #0f0f0f;
-    font-size: medium;
+    font-size: larger;
   }
 
   #myDiv p{
