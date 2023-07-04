@@ -1,24 +1,18 @@
 <!DOCTYPE html>
 <html lang="en">
     <head>
-        <!-- <meta charsets="UTF-8">
-        <meta http-equiv="X-UA-Compatible" content="IE=edge">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0"> -->
         <title>Google Flask WebApp</title>
         <link rel="stylesheet" href="GoogleFlaskApp.css">
-        <script type=’text/javascript’ src=’config.js’></script>
-        <!-- <script type="text/javascript" src=""></script> -->
+        <!-- <script type=’text/javascript’ src=’config.js’></script> -->
     </head>
     <body>
-        <!-- <script async src="https://cse.google.com/cse?cx=d0f9c2380140742ee">
-        </script> -->
         
         <nav class="nav">
             <!-- <p>Welcome to ...</p> -->
             <!-- <form> -->
             <input type="text" placeholder="Search" id="searchInp">
             <button type="submit" id="searchBtn" onclick="searchInput()">Search</button> 
-            <!-- <button id="saveBtn" onclick="saveData()">Save</button>  -->
+            <!-- <button id="saveBtn" onclick="fbKey()">Save</button>  -->
                
         </nav>
 
@@ -27,11 +21,16 @@
     
         <!-- <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app.js"></script> -->
         <!-- <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database.js"></script> -->
+        <script type="text/javascript" src='config.js'></script>
         <script type="module">
             import { initializeApp } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-app.js";
 
+            var mykey = config['FIREBASE_KEY'];
+
+            // consol.log(mykey);
+            // apiKey: mykey,
             const firebaseConfig = {
-                apiKey:"AIzaSyATKswTDdUM3O32dHrn5TaluSM0d4Vc7uU",
+                apiKey: mykey,
                 authDomain: "searchapi-4e5ed.firebaseapp.com",
                 databaseURL: "https://searchapi-4e5ed-default-rtdb.firebaseio.com",
                 projectId: "searchapi-4e5ed",
@@ -72,16 +71,24 @@
 
          <script>
             var qp = "trees";
+            var key2 = config['GOOGLE_KEY'];
             async function searchInput() {//async so we can use 'await' instead of promise chains.
+                // clear the content div
+                document.getElementById('content').innerHTML = "";
+
+                // set qp to be the search input
                 qp = document.getElementById("searchInp").value; 
-            var apiUrl = 'https://www.googleapis.com/customsearch/v1?key=AIzaSyA7h7bFdIN9u5up5P32MHIdB7wacieRwC8&cx=017576662512468239146:omuauf_lfve&q='+qp;
+                
+            var apiUrl = 'https://www.googleapis.com/customsearch/v1?key='+ key2 + '&cx=017576662512468239146:omuauf_lfve&q='+qp;
 
             const response = await fetch(apiUrl);
             const jsonData = await response.json();
             // console.log(jsonData['items'][0]['snippet']);
 
+            var ourLength = jsonData['items'].length; // this is the number or results from the google api
+
             //for (var i = 0; i < jsonData['items'].length; i++) {
-            for (var i = 0; i < 5; i++) {
+            for (var i = 0; i < ourLength; i++) {
                 var preexistingDiv = document.getElementById('content');
                 var parentDiv = preexistingDiv.parentElement;
                 var divElement = document.createElement('div');
@@ -96,7 +103,7 @@
                 document.createElement("br");
                 var anchorElement = document.createElement('a');
                 anchorElement.href = jsonData['items'][i]['link'];
-                var anchorText = document.createTextNode('Link');
+                var anchorText = document.createTextNode('Read More');
                 //document.getElementById("link").append(jsonData['items'][i]['link']);
 
                 // Append the text nodes to the respective elements
@@ -104,8 +111,12 @@
                 paragraphElement.appendChild(paragraphText);
                 anchorElement.appendChild(anchorText);
 
+                // create a line break
+                var line = document.createElement('br');
+
                 // Append the heading, paragraph, and anchor elements to the div
                 divElement.appendChild(headingElement);
+                divElement.appendChild(line);
                 divElement.appendChild(paragraphElement);
                 divElement.appendChild(anchorElement);
 
@@ -120,8 +131,8 @@
                 var link = jsonData['items'][i]['link'];
 
 
-                // store the data in the database
-                saveData(i.toString(),title, snippet,link);
+                //store the data in the database
+                saveData(i.toString(), title, snippet, link);
                 
             };
             
