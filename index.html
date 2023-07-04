@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <title>Google Flask WebApp</title>
+        <link rel="stylesheet" href="GoogleFlaskApp.css">
+        <!-- <script type=’text/javascript’ src=’config.js’></script> -->
+    </head>
+    <body>
+        
+        <nav class="nav">
+            <!-- <p>Welcome to ...</p> -->
+            <!-- <form> -->
+            <input type="text" placeholder="Search" id="searchInp">
+            <button type="submit" id="searchBtn" onclick="searchInput()">Search</button> 
+            <!-- <button id="saveBtn" onclick="fbKey()">Save</button>  -->
+               
+        </nav>
+
+        <div id="content"></div>
+
+    
+        <!-- <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app.js"></script> -->
+        <!-- <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database.js"></script> -->
+        <script type="text/javascript" src='config.js'></script>
+        <script type="module">
+            import { initializeApp } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-app.js";
+
+            var mykey = config['FIREBASE_KEY'];
+
+            // consol.log(mykey);
+            // apiKey: mykey,
+            const firebaseConfig = {
+                apiKey: mykey,
+                authDomain: "searchapi-4e5ed.firebaseapp.com",
+                databaseURL: "https://searchapi-4e5ed-default-rtdb.firebaseio.com",
+                projectId: "searchapi-4e5ed",
+                storageBucket: "searchapi-4e5ed.appspot.com",
+                messagingSenderId: "282183195106",
+                appId: "1:282183195106:web:e0eb0f103fccfbd493c1bb",
+                measurementId: "G-MDK7H2K8E1"
+                };
+
+            // Initialize Firebase
+            const app = initializeApp(firebaseConfig);
+
+            import {getDatabase, ref, set, child, update, remove}
+            from "https://www.gstatic.com/firebasejs/9.23.0/firebase-database.js"
+
+            //set database constant
+            const db = getDatabase();
+
+            function saveData(num1, title1, snippet1, link1) {
+                set(ref(db, "result/"+num1),{
+                    title : title1,
+                    snippet : snippet1,
+                    link : link1
+                })
+                .then(()=>{
+                   // alert("data stored successfully");
+                })
+                .catch((error)=>{
+                   alert("unsusccessful, error"+error);
+                });
+
+                //assign event to button
+                // saveBtn.addEventListener('click', SaveData);
+            }
+            window.saveData = saveData; // set saveData to be a global variable
+
+          </script>
+
+         <script>
+            var qp = "trees";
+            var key2 = config['GOOGLE_KEY'];
+            async function searchInput() {//async so we can use 'await' instead of promise chains.
+                // clear the content div
+                document.getElementById('content').innerHTML = "";
+
+                // set qp to be the search input
+                qp = document.getElementById("searchInp").value; 
+                
+            var apiUrl = 'https://www.googleapis.com/customsearch/v1?key='+ key2 + '&cx=017576662512468239146:omuauf_lfve&q='+qp;
+
+            const response = await fetch(apiUrl);
+            const jsonData = await response.json();
+            // console.log(jsonData['items'][0]['snippet']);
+
+            var ourLength = jsonData['items'].length; // this is the number or results from the google api
+
+            //for (var i = 0; i < jsonData['items'].length; i++) {
+            for (var i = 0; i < ourLength; i++) {
+                var preexistingDiv = document.getElementById('content');
+                var parentDiv = preexistingDiv.parentElement;
+                var divElement = document.createElement('div');
+                divElement.id = 'myDiv';
+                var headingElement = document.createElement('h1');
+                var headingText = document.createTextNode(jsonData['items'][i]['title']);
+                //document.getElementById("title").append(jsonData['items'][i]['title']);
+                document.createElement("br");
+                var paragraphElement = document.createElement('p');
+                var paragraphText = document.createTextNode(jsonData['items'][i]['snippet']);
+                //document.getElementById("snippet").append(jsonData['items'][i]['snippet']);
+                document.createElement("br");
+                var anchorElement = document.createElement('a');
+                anchorElement.href = jsonData['items'][i]['link'];
+                var anchorText = document.createTextNode('Read More');
+                //document.getElementById("link").append(jsonData['items'][i]['link']);
+
+                // Append the text nodes to the respective elements
+                headingElement.appendChild(headingText);
+                paragraphElement.appendChild(paragraphText);
+                anchorElement.appendChild(anchorText);
+
+                // create a line break
+                var line = document.createElement('br');
+
+                // Append the heading, paragraph, and anchor elements to the div
+                divElement.appendChild(headingElement);
+                divElement.appendChild(line);
+                divElement.appendChild(paragraphElement);
+                divElement.appendChild(anchorElement);
+
+                // Append the div to the document preexisting div or any other desired parent element
+
+                preexistingDiv.appendChild(divElement);
+                console.log(headingText);
+
+                //get variables from google api to save to the firebase
+                var title = jsonData['items'][i]['title'];
+                var snippet= jsonData['items'][i]['snippet'];
+                var link = jsonData['items'][i]['link'];
+
+
+                // store the data in the database
+                saveData(i.toString(),title, snippet,link);
+                
+            };
+            
+        }; 
+       </script>
+    </body>
+                
+        </html>
