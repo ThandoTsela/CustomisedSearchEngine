@@ -6,7 +6,7 @@ var config = {
     
    }
 
-//    function fbKey(){
+//    function fKey(){
 //     console.log(config['FIREBASE_KEY'])
 //     return config['FIREBASE_KEY']
 //    }
