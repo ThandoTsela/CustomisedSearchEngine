@@ -77,6 +77,10 @@ body{
     margin-bottom: 30px;
   }
 
+  #myDiv:hover{
+    background-color: #e2f56a5d;
+  }
+
   #myDiv h1{
     color: #0f0f0f;
     font-size: larger;
